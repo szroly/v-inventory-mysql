@@ -30,7 +30,6 @@ app.use('/users', users)
 
 
 
-app.listen(3001, () => {
-  console.log('server is running on port 3001')
-  
-})
+app.listen(process.env.PORT || 2000,"0.0.0.0", () => {
+  console.log("server started...");
+});
