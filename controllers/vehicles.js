@@ -44,7 +44,8 @@ const editVehicle = async (req,res) => {
     if (result.affectedRows === 0) {
       return res.status(404).send({ error: 'Vehicle not found'})
     }
-    res.status(200).send(result)
+    const [updatedVehicle] = await connection.query('SELECT * FROM vehicles WHERE id = ?', [id])
+    res.status(200).send(updatedVehicle[0])
   } catch (e) {
     res.status(500).send({ error: e.message })
   }
@@ -58,7 +59,7 @@ const deleteVehicle = async (req,res) => {
     if (result.affectedRows === 0) {
       return res.status(404).send({ error: 'Vehicle not found'})
     }
-    res.status(200).send(result)
+    res.status(200).send({ message: 'Vehicle deleted successfully' })
   } catch (e) {
     res.status(500).send({ error: e.message })
   }

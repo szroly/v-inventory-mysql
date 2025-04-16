@@ -44,7 +44,8 @@ const editEquipment = async (req,res) => {
     if (result.affectedRows === 0) {
       return res.status(404).send({ error: 'Equipment not found'})
     }
-    res.status(200).send(result)
+    const [updatedEquipment] = await connection.query('SELECT * FROM equipment WHERE id = ?', [id])
+    res.status(200).send(updatedEquipment[0])
   } catch (e) {
     res.status(500).send({ error: e.message })
   }
@@ -58,7 +59,7 @@ const deleteEquipment = async (req,res) => {
     if (result.affectedRows === 0) {
       return res.status(404).send({ error: 'Equipment not found'})
     }
-    res.status(200).send(result)
+    res.status(200).send({ message: 'Equipment deleted successfully' })
   } catch (e) {
     res.status(500).send({ error: e.message })
   }

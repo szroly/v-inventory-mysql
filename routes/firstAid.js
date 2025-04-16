@@ -13,6 +13,8 @@ router.get('/:id', authMiddleware.authenticateToken, firstAidController.getFirst
 
 router.post('/', authMiddleware.authenticateToken, firstAidController.postFirstAid)
 
+router.put('/:id', authMiddleware.authenticateToken, firstAidController.updateFirstAid)
+
 router.delete('/:id', authMiddleware.authenticateToken, firstAidController.deleteFirstAid)
 
 
