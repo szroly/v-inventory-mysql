@@ -18,13 +18,15 @@ const services = require('./routes/services')
 
 const cleanExpiredTokens = require('./config/cronJobs')
 
-
+const cors = require('cors')
 
 
 
 const app = express()
 
 app.use(express.json())
+
+app.use(cors())
 
 app.use(express.urlencoded({ extended: true }))
 
