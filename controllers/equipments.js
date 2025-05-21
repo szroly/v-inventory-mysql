@@ -4,6 +4,15 @@ const getEquipments = async (req,res) => {
   try {
     const connection = await db
     const [result] = await connection.query('SELECT * FROM equipment')
+    if (result.length !== 0) {
+      for (const equipment of result) {
+        const [vehicles] = await connection.query(
+          'SELECT * FROM vehicles WHERE id = ?',
+          [equipment.vehicle_id]
+        )
+        equipment.vehicle = vehicles[0]
+      }
+    }
     res.status(200).send(result)
   } catch (e) {
     res.status(500).send(e)

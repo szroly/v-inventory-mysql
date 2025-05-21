@@ -4,6 +4,15 @@ const getServices = async (req, res) => {
   try {
     const connection = await db
     const [result] = await connection.query('SELECT * FROM services')
+    if (result.length !== 0) {
+      for (const service of result) {
+        const [vehicles] = await connection.query(
+          'SELECT * FROM vehicles WHERE id = ?',
+          [service.vehicle_id]
+        )
+        service.vehicle = vehicles[0]
+      }
+    }
     res.status(200).send(result)
   } catch (error) {
     res.status(500).send(error)

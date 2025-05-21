@@ -7,7 +7,7 @@ const pool = mysql2.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  port: 3306, // A freedb.tech által megadott alapértelmezett port
+  port: 3306, 
   waitForConnections: true,
   connectionLimit: 10, // Maximum 10 egyidejű kapcsolat
   queueLimit: 0, // Nincs limit a várakozó kapcsolatokra
