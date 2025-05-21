@@ -4,6 +4,15 @@ const getInsurances = async (req, res) => {
   try {
     const connection = await db
     const [result] = await connection.query('SELECT * FROM insurances')
+    if (result.length !== 0) {
+      for (const insurance of result) {
+        const [vehicles] = await connection.query(
+          'SELECT * FROM vehicles WHERE id = ?',
+          [insurance.vehicle_id]
+        )
+        insurance.vehicle = vehicles[0]
+      }
+    }
     res.status(200).send(result)
   } catch (error) {
     res.status(500).send(error)

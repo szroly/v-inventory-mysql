@@ -4,6 +4,15 @@ const getFirstAids = async (req,res) => {
   try {
     const connection = await db
     const [result] = await connection.query('SELECT * FROM first_aids')
+    if (result.length !== 0) {
+      for (const firstAid of result) {
+        const [vehicles] = await connection.query(
+          'SELECT * FROM vehicles WHERE id = ?',
+          [firstAid.vehicle_id]
+        )
+        firstAid.vehicle = vehicles[0]
+      }
+    }
     res.status(200).send(result)
   } catch (e) {
     res.status(500).send(e)
