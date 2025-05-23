@@ -14,7 +14,30 @@ const getVehicle = async (req,res) => {
   const id = req.params.id
   try {
     const connection = await db
-    const [result] = await connection.query('SELECT * FROM vehicles WHERE id = ?', [id])
+    // Get vehicle basic info
+    const [vehicleResult] = await connection.query('SELECT * FROM vehicles WHERE id = ?', [id])
+
+    if (vehicleResult.length === 0) {
+      res.status(404).send({ error: 'Vehicle not found'})
+      return
+    }
+
+    // Get related data
+    const [firstAid] = await connection.query('SELECT * FROM first_aids WHERE vehicle_id = ?', [id])
+    const [insurance] = await connection.query('SELECT * FROM insurances WHERE vehicle_id = ?', [id])
+    const [equipments] = await connection.query('SELECT * FROM equipment WHERE vehicle_id = ?', [id])
+    const [service] = await connection.query('SELECT * FROM services WHERE vehicle_id = ?', [id])
+    // const [tires] = await connection.query('SELECT * FROM tires WHERE vehicle_id = ?', [id])
+
+    // Combine all data
+    const result = {
+      ...vehicleResult[0],
+      firstAid,
+      insurance,
+      equipments,
+      service,
+      // tires
+    }
     if (result.length === 0) {
       res.status(404).send({ error: 'Vehicle not found'})
     }
